@@ -87,21 +87,23 @@ body {
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-  position: relative;
 }
 
-#gallery {
+.gallery-container {
+  display: flex;
+  gap: 24px;
+}
+
+.gallery {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
   list-style-type: none;
   justify-content: center;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
 }
+
+
+
 
 .gallery-item {
   display: flex;
@@ -114,9 +116,9 @@ body {
 
 .gallery-image {
   display: block;
+  object-fit: cover;
   width: 360px;
   height: 152px;
-  object-fit: cover;
 }
 
 .stats-block {
@@ -203,4 +205,40 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+.loadMore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #FFFFFF;
+  background-color: #4E75FF;
+  padding: 8px 16px;
+  border: none;
+  width: 125px;
+  height: 40px;
+
+
+}
+
+.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loadMore:hover {
+  background-color: #6C8CFF;
+}
+
+.loadMore:disabled {
+  color: #FFFFFF;
+  background-color: #4E75FF;
+  opacity: 0.7;
+  cursor: default;
+
+
 }

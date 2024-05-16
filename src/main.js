@@ -8,11 +8,13 @@ const searchForm = document.querySelector('#search-form');
 const galleryList = document.querySelector('#gallery');
 const loaderEl = document.querySelector('.loader');
 const loadMore = document.querySelector('#loadMore');
+let page = 1;
+let valueSearch = '';
 
 searchForm.addEventListener('submit', async event => {
   event.preventDefault();
 
-  const valueSearch = event.target.elements.searchInput.value.trim();
+  valueSearch = event.target.elements.searchInput.value.trim();
 
   if (!valueSearch) {
     galleryList.innerHTML = '';
@@ -27,10 +29,13 @@ searchForm.addEventListener('submit', async event => {
 
   galleryList.innerHTML = '';
   loaderEl.classList.remove('is-hidden');
-  console.log(await imagesFetch('car'));
-
+  page = 1;
   try {
-    const response = await imagesFetch(valueSearch);
+    const response = await imagesFetch(valueSearch, page);
+
+    searchForm.searchInput.value = '';
+    galleryList.innerHTML = '';
+
     if (!response.hits.length) {
       iziToast.show({
         message:
@@ -39,11 +44,26 @@ searchForm.addEventListener('submit', async event => {
         timeout: 2000,
         color: 'red',
       });
+      loadMore.classList.add('is-hidden');
+      galleryList.innerHTML = '';
+      loaderEl.classList.add('is-hidden');
+      return;
     }
-    searchForm.searchInput.value = '';
-    galleryList.innerHTML = '';
+
     createMarcup(response.hits, galleryList);
+    loadMore.classList.remove('is-hidden');
     loaderEl.classList.add('is-hidden');
+    if (page * 15 >= response.totalHits) {
+      loadMore.classList.add('is-hidden');
+      iziToast.show({
+        title: 'Error',
+        message: "We're sorry, but you've reached the end of search results.",
+        position: 'topRight',
+        messageColor: '#ffffff',
+        timeout: 3000,
+        backgroundColor: '#ef4040',
+      });
+    }
   } catch (error) {
     console.log(error);
     iziToast.error({
@@ -56,7 +76,34 @@ searchForm.addEventListener('submit', async event => {
       backgroundColor: '#ef4040',
     });
     loaderEl.classList.add('is-hidden');
+    loadMore.classList.add('is-hidden');
   }
 });
 
-loadMore.addEventListener('click', async event => {});
+loadMore.addEventListener('click', async event => {
+  page += 1;
+  const response = await imagesFetch(valueSearch, page);
+  scrollTo(galleryList);
+  createMarcup(response.hits, galleryList);
+  if (page * 15 >= response.totalHits) {
+    loadMore.classList.add('is-hidden');
+    iziToast.show({
+      message: "We're sorry, but you've reached the end of search results.",
+      position: 'topRight',
+      messageColor: '#ffffff',
+      timeout: 3000,
+      backgroundColor: '#ef4040',
+    });
+  }
+});
+
+function scrollTo(galleryList) {
+  setTimeout(() => {
+    const { height: cardHeight } =
+      galleryList.firstElementChild.getBoundingClientRect();
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
+  }, 500);
+}

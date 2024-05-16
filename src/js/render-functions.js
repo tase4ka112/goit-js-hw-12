@@ -19,7 +19,7 @@ export const createMarcup = (list, tag) => {
               <span>${image.views}</span>
             </li>
             <li>
-              <span>Coments</span>np
+              <span>Coments</span>
               <span>${image.comments}</span>
             </li>
             <li>
