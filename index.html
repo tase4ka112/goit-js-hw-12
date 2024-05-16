@@ -15,7 +15,7 @@
     <script type="module" crossorigin src="/goit-js-hw-12/commonHelpers.js"></script>
     <link rel="modulepreload" crossorigin href="/goit-js-hw-12/assets/vendor-f736e62a.js">
     <link rel="stylesheet" href="/goit-js-hw-12/assets/vendor-4b066c51.css">
-    <link rel="stylesheet" href="/goit-js-hw-12/assets/index-e2d49f8f.css">
+    <link rel="stylesheet" href="/goit-js-hw-12/assets/index-fe33180c.css">
   </head>
   <body>
     <form class="search" id="search-form">
@@ -30,9 +30,13 @@
 
     <section class="gallery-section">
       <span class="loader is-hidden"></span>
-      <ul class="gallery" id="gallery"></ul>
+      <div class="gallery-container">
+        <ul class="gallery" id="gallery"></ul>
+      </div>
     </section>
-    <button type="button" id="loadMore">Load more</button>
+    <button class="loadMore is-hidden" type="button" id="loadMore">
+      Load more
+    </button>
     
   </body>
 </html>
